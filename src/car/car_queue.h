@@ -17,6 +17,7 @@ typedef struct {
 } car_queue_t;
 
 void car_queue_init(car_queue_t *queue, size_t size);
+void car_queue_free(car_queue_t *queue);
 size_t car_queue_len(const car_queue_t *queue);
 _Bool car_queue_empty(const car_queue_t *queue);
 car_t *car_queue_pop(car_queue_t *queue);

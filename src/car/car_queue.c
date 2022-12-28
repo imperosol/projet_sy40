@@ -18,6 +18,10 @@ void car_queue_init(car_queue_t *const queue, const size_t size) {
     queue->head = 0;
 }
 
+void car_queue_free(car_queue_t *queue) {
+    free(queue->arr);
+}
+
 _Bool car_queue_empty(const car_queue_t *const queue) {
     return queue->arr[queue->tail] == NULL;
 }
@@ -38,10 +42,11 @@ car_t *car_queue_pop(car_queue_t *const queue) {
     }
     car_t *res = queue->arr[queue->tail];
     queue->arr[queue->tail] = NULL;
-    index_increment(queue->tail, queue->max_size);
+    if (queue->head != queue->tail) {
+        index_increment(queue->tail, queue->max_size);
+    }
     return res;
 }
-
 
 void car_queue_push(car_queue_t *restrict const queue, car_t *restrict const car) {
     if (queue->arr[queue->tail] != NULL) {  // the queue isn't empty
