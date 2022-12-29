@@ -12,6 +12,5 @@ void open_gate(gate_t *gate);
 void close_gate(gate_t *gate);
 void free_gate(gate_t *gate);
 void gate_add_car(gate_t *gate, car_t *car);
-car_t *gate_remove_car(gate_t *gate);
 
 #endif //PROJET_PEAGE_GATE_H

@@ -11,13 +11,13 @@
 int main() {
     toll_t toll;
     toll_init(&toll);
-//    pthread_t fmt_thread;
-//    int res = pthread_create(&fmt_thread, NULL, printer, &toll);
-//    if (res != 0) {
-//        fprintf(stderr, "erreur création thread");
-//        exit(1);
-//    }
-//    pthread_detach(fmt_thread);
+    pthread_t fmt_thread;
+    int res = pthread_create(&fmt_thread, NULL, printer, &toll);
+    if (res != 0) {
+        fprintf(stderr, "erreur création thread");
+        exit(1);
+    }
+    pthread_detach(fmt_thread);
     loop {
         usleep(time_until_next_car(&toll.clock) * 10000);
         toll_add_car(&toll, new_car());

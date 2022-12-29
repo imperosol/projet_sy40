@@ -14,11 +14,12 @@ void toll_init(toll_t *toll) {
     toll->open_gates = 0;
     for (int i = 0; i < NB_GATES; ++i) {
         init_gate(&toll->gates[i], toll);
+        toll->gates[i].id = i + 1;
     }
     toll->clock.h = 7;
     toll->clock.m = 30;
     toll->clock.s = 0;
-//    pthread_mutex_init(&toll->clock.mutex, NULL);
+    pthread_mutex_init(&toll->clock.mutex, NULL);
     db_init(&toll->log_db);
 }
 
@@ -27,6 +28,7 @@ void toll_free(toll_t *toll) {
         free_gate(&toll->gates[i]);
     }
     free(toll->gates);
+    pthread_mutex_destroy(&toll->clock.mutex);
 }
 
 void toll_open_gate(toll_t *toll) {
@@ -87,10 +89,10 @@ void toll_add_car(toll_t *toll, car_t *car) {
             gate = &toll->gates[toll->open_gates - 1];
         }
     }
-//    pthread_mutex_lock(&toll->clock.mutex);
+    pthread_mutex_lock(&toll->clock.mutex);
     sprintf(car->arrival_timestamp,
             "%02dH%02dm%02d",
             toll->clock.h, toll->clock.m, toll->clock.s);
-//    pthread_mutex_unlock(&toll->clock.mutex);
+    pthread_mutex_unlock(&toll->clock.mutex);
     gate_add_car(gate, car);
 }

@@ -10,6 +10,7 @@ typedef struct {
     database *db;
     car_t car;
     char departure_timestamp[10];
+    int gate_idx;
 } thread_register_args;
 
 void db_init(database *db) {
@@ -33,12 +34,13 @@ void db_init(database *db) {
                   "    nb_passengers INTEGER not null,"
                   "    type          INTEGER not null,"
                   "    payment_mean  TEXT    not null,"
+                  "    gate          INTEGER not null,"
                   "    arrival       TEXT    not null,"
                   "    departure     TEXT,"
                   "    constraint type_check_1"
-                  "        check (type > 0),"
+                  "        check (type >= 0),"
                   "    constraint type_check_2"
-                  "        check (type < 5)"
+                  "        check (type < 6)"
                   ");"
                   "create unique index vehicle_id_uindex"
                   "    on vehicle (id);";
@@ -53,14 +55,13 @@ static inline void *db_log_car_thread(void *args) {
     sprintf(query,
             "insert into vehicle ("
             "   kilometers, nb_passengers, type,"
-            "   payment_mean, arrival, departure"
+            "   payment_mean, gate, arrival, departure"
             ") "
-            "values (%d, %d, %d, \"%s\", \"%s\", \"%s\");",
-            _args->car.nb_kilometers, _args->car.nb_passengers, _args->car.type,
+            "values (%d, %d, %d, %d, \"%s\", \"%s\", \"%s\");",
+            _args->car.nb_kilometers, _args->car.nb_passengers, _args->car.type, _args->gate_idx,
             payment_mean_to_str(_args->car.payment_mean), _args->car.arrival_timestamp,
             _args->departure_timestamp);
     char *z_err = NULL;
-    puts(query);
     int res = sqlite3_exec(_args->db->db,
                            query,
 //                           "insert into vehicle (kilometers, nb_passengers, type, payment_mean, arrival) values (70, 1, 2, \"ELECTRONIC POLL\", \"20221202 18:51:03\");",
@@ -71,10 +72,10 @@ static inline void *db_log_car_thread(void *args) {
     }
     pthread_mutex_unlock(&_args->db->mutex);
     free(args);
-    exit(0);
+    return NULL;
 }
 
-void db_log_car(database *restrict db, const car_t *restrict car, char *restrict departure_timestamp) {
+void db_log_car(database *restrict db, const car_t *restrict car, char *restrict departure_timestamp, const int gate_idx) {
     /*
      * Comme l'écriture en base de données est une opération qui peut être relativement
      * lente, on fait une copie en mémoire de la voiture à enregistrer,
@@ -85,9 +86,9 @@ void db_log_car(database *restrict db, const car_t *restrict car, char *restrict
     strcpy(args->departure_timestamp, departure_timestamp);
     args->db = db;
     args->car = *car;
+    args->gate_idx = gate_idx;
     pthread_t thread;
-    puts("yo");
-    pthread_create(&thread, NULL, db_log_car_thread, &args);
+    pthread_create(&thread, NULL, db_log_car_thread, args);
     pthread_detach(thread);
 }
 

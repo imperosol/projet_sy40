@@ -15,6 +15,9 @@ _Noreturn void *printer(void *args) {
     toll_t *toll = (toll_t *) args;
     loop {
         sleep(1);
+        pthread_mutex_lock(&toll->clock.mutex);
+        printf("\n%dH%d\n", toll->clock.h, toll->clock.m);
+        pthread_mutex_unlock(&toll->clock.mutex);
         for (int i = 0; i < NB_GATES; ++i) {
             gate_t *gate = &toll->gates[i];
             pthread_mutex_lock(&gate->mutex);

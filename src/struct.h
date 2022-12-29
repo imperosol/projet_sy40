@@ -8,7 +8,7 @@
 #include <pthread.h>
 #include <sqlite3.h>
 
-#define NB_GATES 1
+#define NB_GATES 10
 
 typedef enum {
     LIGHT = 0,
@@ -45,6 +45,7 @@ struct simple_time_t {
     unsigned int h;
     unsigned int m;
     unsigned int s;
+    pthread_mutex_t mutex;
 };
 typedef struct simple_time_t toll_clock_t;
 
@@ -55,6 +56,7 @@ typedef struct {
     pthread_t thread;
     car_queue_t car_queue;
     _Bool opened;
+    int id;
 } gate_t;
 
 typedef struct {

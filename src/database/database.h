@@ -13,7 +13,7 @@
 
 
 void db_init(database *db);
-void db_log_car(database *restrict db, const car_t *restrict car, char *restrict departure_timestamp);
+void db_log_car(database *restrict db, const car_t *restrict car, char *restrict departure_timestamp, int gate_idx);
 void db_close(database *db);
 
 #endif //PROJET_PEAGE_DATABASE_H
