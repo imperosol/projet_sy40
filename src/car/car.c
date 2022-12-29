@@ -48,8 +48,10 @@ car_t *new_car() {
     car_t *car = malloc(sizeof(car_t));
     // on considère que 85% des véhicules sont de classe 1, 10% de classe 2, 4% de classe 3 et 1% de classe 4
     int rnd = rnd_uniform_i(0, 100);
-    if (rnd < 85) {
+    if (rnd < 80) {
         car->type = LIGHT;
+    } else if (rnd < 85) {
+        car->type = INTERMEDIATE;
     } else if (rnd < 95) {
         car->type = TRUCK;
     } else if (rnd < 99) {

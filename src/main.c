@@ -1,19 +1,28 @@
 #include "toll/toll.h"
+#include "toll/display.h"
 #include "car/car.h"
-#include "car/car_queue.h"
+#include "utils/symbols.h"
+#include "struct.h"
 #include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "EndlessLoop"
 int main() {
     toll_t toll;
     toll_init(&toll);
-    toll_open_gate(&toll);
-    toll_open_gate(&toll);
-    for (int i = 0; i < 30; ++i) {
+//    pthread_t fmt_thread;
+//    int res = pthread_create(&fmt_thread, NULL, printer, &toll);
+//    if (res != 0) {
+//        fprintf(stderr, "erreur création thread");
+//        exit(1);
+//    }
+//    pthread_detach(fmt_thread);
+    loop {
+        usleep(time_until_next_car(&toll.clock) * 10000);
         toll_add_car(&toll, new_car());
-        sleep(2);
     }
-    toll_free(&toll);
-    return 0;
+    /* Comme le programme tout entier est une boucle infinie,
+     * il ne peut se terminer que par un message d'interruption */
 }
+#pragma clang diagnostic pop

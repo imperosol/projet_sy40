@@ -28,11 +28,11 @@ _Bool car_queue_empty(const car_queue_t *const queue) {
 
 size_t car_queue_len(const car_queue_t *const queue) {
     if (queue->arr[queue->head] == NULL) {
-        return 0;
-    } else if (queue->tail > queue->head) {
-        return queue->tail - queue->head + 1;
+        return (size_t) 0;
+    } else if (queue->head >= queue->tail) {
+        return (size_t) (queue->head - queue->tail + 1);
     } else {
-        return queue->max_size - queue->tail + queue->head + 1;
+        return (size_t) (queue->max_size - queue->tail + queue->head + 1);
     }
 }
 
@@ -92,5 +92,34 @@ void car_queue_trim(car_queue_t *const queue) {
     queue->tail = new_size - 1;
     queue->max_size = new_size;
 }
+
+car_vec_t car_queue_to_vec(car_queue_t *queue) {
+    car_vec_t res;
+    if (queue->head == queue->tail) {
+        res.arr = malloc(sizeof(car_t *));
+        res.arr[0] = queue->arr[queue->head];
+        res.size = queue->arr[queue->head] != NULL;
+    } else if (queue->head > queue->tail) {
+        res.size = queue->head - queue->tail + 1;
+        res.arr = malloc(res.size * sizeof(car_t *));
+        for (size_t vec_idx = 0, queue_idx = queue->tail; queue_idx <= queue->head; ++vec_idx, queue_idx++) {
+            res.arr[vec_idx] = queue->arr[queue_idx];
+        }
+    } else {
+        res.size = queue->max_size - queue->tail + queue->head + 1;
+        res.arr = malloc(res.size * sizeof(car_t *));
+        int size = 0;
+        for (size_t i = queue->tail; i < queue->max_size; ++i) {
+            res.arr[size] = queue->arr[i];
+            size++;
+        }
+        for (size_t i = 0; i <= queue->head; ++i) {
+            res.arr[size] = queue->arr[i];
+            size++;
+        }
+    }
+    return res;
+}
+
 
 

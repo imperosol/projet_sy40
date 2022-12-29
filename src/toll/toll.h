@@ -5,14 +5,8 @@
 #ifndef PROJET_PEAGE_TOLL_H
 #define PROJET_PEAGE_TOLL_H
 
-#include "gate.h"
-
-#define NB_GATES 10
-
-typedef struct {
-    gate_t gates[NB_GATES];
-    size_t open_gates;
-} toll_t;
+#include "../database/database.h"
+#include "../struct.h"
 
 void toll_init(toll_t *toll);
 void toll_free(toll_t *toll);

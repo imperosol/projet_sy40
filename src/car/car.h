@@ -6,28 +6,7 @@
 #define PROJET_PEAGE_CAR_H
 
 #include <stdbool.h>
-
-typedef enum {
-    LIGHT = 0,
-    INTERMEDIATE = 1,
-    TRUCK = 2,
-    HEAVY_TRUCK = 3,
-    MOTORCYCLE = 4
-} car_type_e;
-
-typedef enum {
-    ELECTRONIC_TOLL,
-    CASH
-} payment_mean_e;
-
-typedef struct {
-    unsigned short nb_passengers;
-    bool taxi;
-    bool low_carbon;
-    payment_mean_e payment_mean;
-    car_type_e type;
-    unsigned int nb_kilometers;
-} car_t;
+#include "../toll/frequentation_engine.h"
 
 char *payment_mean_to_str(payment_mean_e payment_mean);
 /**

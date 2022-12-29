@@ -5,18 +5,9 @@
 #ifndef PROJET_PEAGE_GATE_H
 #define PROJET_PEAGE_GATE_H
 
-#include <pthread.h>
-#include "../car/car_queue.h"
+#include "../struct.h"
 
-typedef struct {
-    pthread_mutex_t mutex;
-    pthread_cond_t cond;
-    pthread_t thread;
-    car_queue_t car_queue;
-    bool opened;
-} gate_t;
-
-void init_gate(gate_t *gate);
+void init_gate(gate_t *restrict gate, toll_t *restrict toll);
 void open_gate(gate_t *gate);
 void close_gate(gate_t *gate);
 void free_gate(gate_t *gate);

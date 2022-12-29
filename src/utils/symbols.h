@@ -7,6 +7,8 @@
 
 #define and &&
 #define or ||
+#define not !
+#define loop for(;;)
 
 #define max(a, b) a > b ? a : b
 #define min(a, b) a < b ? a : b
