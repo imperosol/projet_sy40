@@ -2,6 +2,7 @@
 #include "toll/display.h"
 #include "car/car.h"
 #include "utils/symbols.h"
+#include "utils/random.h"
 #include "struct.h"
 #include <unistd.h>
 #include <stdio.h>
@@ -9,6 +10,7 @@
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "EndlessLoop"
 int main() {
+    rnd_init();
     toll_t toll;
     toll_init(&toll);
     pthread_t fmt_thread;
