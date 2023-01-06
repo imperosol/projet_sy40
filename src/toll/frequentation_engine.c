@@ -10,7 +10,7 @@ static inline float get_expectancy(const toll_clock_t *const clock) {
     assert(clock->h < 24);
     const static float lookup[] = {
             80.0f, 100.0f, 110.0f, 80.0f, 80.0f, 70.0f,
-            30.0f, 15.0f, 4.0f, 5.0f, 20.0f, 25.0f,
+            30.0f, 15.0f, 4.3f, 5.0f, 20.0f, 25.0f,
             25.0f, 30.0f, 35.0f, 25.0f, 10.0f, 4.0f,
             10.0f, 30.0f, 40.0f, 50.0f, 60.0f, 70.0f
     };
